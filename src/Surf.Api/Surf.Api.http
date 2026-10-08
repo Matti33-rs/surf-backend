@@ -1,0 +1,30 @@
+@Surf.Api_HostAddress = http://localhost:5029
+
+### Webhook verification handshake
+GET {{Surf.Api_HostAddress}}/api/hooks/whatsapp?hub.mode=subscribe&hub.verify_token=dev-verify-token&hub.challenge=12345
+
+### Incoming text message
+POST {{Surf.Api_HostAddress}}/api/hooks/whatsapp
+Content-Type: application/json
+
+{
+  "object": "whatsapp_business_account",
+  "entry": [{
+    "id": "WABA_ID",
+    "changes": [{
+      "field": "messages",
+      "value": {
+        "messaging_product": "whatsapp",
+        "metadata": { "display_phone_number": "15550000000", "phone_number_id": "PHONE_NUMBER_ID" },
+        "contacts": [{ "profile": { "name": "Test User" }, "wa_id": "5491100000000" }],
+        "messages": [{
+          "from": "5491100000000",
+          "id": "wamid.TEST",
+          "timestamp": "1759500000",
+          "type": "text",
+          "text": { "body": "Hola!" }
+        }]
+      }
+    }]
+  }]
+}
